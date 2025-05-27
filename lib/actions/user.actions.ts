@@ -24,15 +24,6 @@ export const validateUserInformation = async (
 		const email = formData.get("email") as string;
 		const phone = formData.get("phone") as string;
 
-		console.log("Extracted form data:", {
-			firstName,
-			lastName,
-			gender,
-			country,
-			email,
-			phone,
-		});
-
 		const validatedData = signUpUserSchema.parse({
 			firstName,
 			lastName,
