@@ -1,3 +1,6 @@
+"use client";
+
+import { useActionState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -11,9 +14,14 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { getEmojiFlag, countries } from "countries-list";
 import { InfoIcon } from "lucide-react";
+import { validateUserInformation } from "@/lib/actions/user.actions";
 
 export default function Home() {
-	// Type safe mapping of country codes
+	const [data, action] = useActionState(validateUserInformation, {
+		success: false,
+		message: "",
+	});
+
 	const countryList = Object.entries(countries).map(([code, country]) => ({
 		code: code,
 		name: country.name,
@@ -21,7 +29,7 @@ export default function Home() {
 	}));
 
 	return (
-		<form>
+		<form action={action}>
 			<div className="w-full max-w-3xl mx-auto p-6">
 				<h1 className="text-4xl font-serif mb-1 text-center">Registration</h1>
 				<p className="text-right text-gray-600 mb-4">Step 1 of 3</p>
@@ -79,7 +87,7 @@ export default function Home() {
 								</Label>
 								<InfoIcon className="h-5 w-5 text-gray-400" />
 							</div>
-							<Select>
+							<Select name="gender" required>
 								<SelectTrigger className="w-full">
 									<SelectValue placeholder="Select gender..." />
 								</SelectTrigger>
@@ -98,7 +106,7 @@ export default function Home() {
 								</Label>
 								<InfoIcon className="h-5 w-5 text-gray-400" />
 							</div>
-							<Select>
+							<Select name="country" required>
 								<SelectTrigger className="w-full">
 									<SelectValue placeholder="Select residence country..." />
 								</SelectTrigger>
@@ -106,7 +114,7 @@ export default function Home() {
 									{countryList.map((country) => (
 										<SelectItem
 											key={country.code}
-											value={country.code.toString()}
+											value={country.name.toString()}
 										>
 											{country.emoji} {country.name}
 										</SelectItem>
