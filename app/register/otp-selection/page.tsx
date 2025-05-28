@@ -12,6 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { RegisterContext, RegisterContextType } from "../layout";
 import { sendOtp, SignUpUser } from "@/lib/actions/user.actions";
+import { toast } from "sonner";
 
 function OTPDestinations() {
 	const { formData, setFormData } = useContext(
@@ -19,16 +20,29 @@ function OTPDestinations() {
 	) as RegisterContextType;
 	const [isPending, startTransition] = useTransition();
 
+	// TODO: route user to registration page if users loses registration details
+	// TODO: handle back button
+
 	const handleConfirmation = () => {
 		startTransition(async () => {
 			if (!formData.otpChannel) {
-				console.error("OTP channel is not selected.");
+				console.error();
+				toast.error("Please select a destination for OTP.");
+
 				return;
 			}
 			const result = await sendOtp({
 				otpChannel: formData.otpChannel,
 				otpVal: formData[formData.otpChannel as keyof SignUpUser] ?? "",
 			});
+
+			if (!result.success) {
+				toast.error(result.message);
+				return;
+			}
+
+			//navigate to verification
+			toast.success(result.message);
 		});
 		return true;
 	};

@@ -15,6 +15,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
 		// This will not be a production-ready implementation
 		console.log(`OTP for ${otpChannel}: ${otp}`);
 
+		// TODO: check if the contact has already been sent an OTP
+
 		const result = await prisma.oTPStore.create({
 			data: {
 				contact: otpChannel,
