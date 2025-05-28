@@ -1,6 +1,7 @@
 import { formatError } from "../utils";
 import { z } from "zod";
 
+// TODO: Move validatioon to layout or step 1 component
 export const signUpUserSchema = z.object({
 	firstName: z.string().min(1, "First Name must be at least 3 characters long"),
 	lastName: z.string().min(1, "Last Name must be at least 3 characters long"),
@@ -11,7 +12,7 @@ export const signUpUserSchema = z.object({
 });
 
 export type SignUpUser = z.infer<typeof signUpUserSchema> & {
-	otpChannel?: "email" | "sms" | null;
+	otpChannel?: "email" | "phone" | null;
 	otpSessionId?: string | null;
 	verificationTicket?: string | null;
 };
@@ -31,16 +32,30 @@ export const validateUserInformation = (formData: SignUpUser) => {
 	}
 };
 
-export const sendOtp = async (otpChannel: string) => {
-	// This function should implement the logic to send OTP
-	// For now, we will just return a mock response
-
-	console.log("Sending OTP with data:", otpChannel);
-
+export const sendOtp = async ({
+	otpChannel,
+	otpVal,
+}: {
+	otpChannel: string;
+	otpVal: string;
+}) => {
 	try {
+		const response = await fetch("/api/send-otp", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ otpChannel, otpVal }),
+		});
+		if (!response.ok) {
+			const errorData = await response.json();
+			throw new Error(`Failed to send OTP: ${errorData.message}`);
+		}
+		const res = await response.json();
 		return {
 			success: true,
 			message: "OTP sent successfully",
+			otpSessionId: res.otpSessionId,
 		};
 	} catch (error) {
 		return {

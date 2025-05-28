@@ -20,10 +20,15 @@ function OTPDestinations() {
 	const [isPending, startTransition] = useTransition();
 
 	const handleConfirmation = () => {
-		console.log("Sending OTP to:", formData);
 		startTransition(async () => {
-			const result = await sendOtp(formData.otpChannel);
-			console.log("Server action result:", result);
+			if (!formData.otpChannel) {
+				console.error("OTP channel is not selected.");
+				return;
+			}
+			const result = await sendOtp({
+				otpChannel: formData.otpChannel,
+				otpVal: formData[formData.otpChannel as keyof SignUpUser] ?? "",
+			});
 		});
 		return true;
 	};
@@ -48,11 +53,11 @@ function OTPDestinations() {
 					<CardContent className="flex justify-between">
 						<Checkbox
 							id="phone"
-							checked={formData.otpChannel === "sms"}
+							checked={formData.otpChannel === "phone"}
 							onCheckedChange={(checked) => {
 								setFormData((f: SignUpUser) => ({
 									...f,
-									otpChannel: checked ? "sms" : null,
+									otpChannel: checked ? "phone" : null,
 								}));
 							}}
 						/>
