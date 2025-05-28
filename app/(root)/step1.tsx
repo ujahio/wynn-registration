@@ -1,5 +1,6 @@
 import { useActionState, useState } from "react";
-
+import { getEmojiFlag, countries } from "countries-list";
+import { InfoIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -11,23 +12,27 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-
-import { getEmojiFlag, countries } from "countries-list";
-import { InfoIcon } from "lucide-react";
-import { validateUserInformation } from "@/lib/actions/user.actions";
+import {
+	SignUpUser,
+	validateUserInformation,
+} from "@/lib/actions/user.actions";
+import { UserCredsState } from "./page";
 
 function RegistrationStepOne({
 	setVerifiedUserCredentials,
 }: {
-	setVerifiedUserCredentials: (userCredsVerified: boolean) => void;
+	setVerifiedUserCredentials: (userCredsVerified: UserCredsState) => void;
 }) {
-	const [data, action] = useActionState(validateUserInformation, {
+	const [userData, action] = useActionState(validateUserInformation, {
 		success: false,
 		message: "",
 	});
 
-	if (data.success) {
-		setVerifiedUserCredentials(data.success);
+	if (userData.success) {
+		setVerifiedUserCredentials({
+			user: userData.data as SignUpUser,
+			success: userData.success,
+		});
 	}
 
 	const [termsAccepted, setTermsAccepted] = useState(false);

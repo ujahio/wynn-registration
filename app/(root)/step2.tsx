@@ -13,13 +13,13 @@ import { Button } from "@/components/ui/button";
 function OTPDestinations({
 	captureOTPDestination,
 }: {
-	captureOTPDestination?: (destination: string) => void;
+	captureOTPDestination: (destination: string) => void;
 }) {
 	const [sendToPhoneChecked, setSendToPhone] = useState(false);
 	const [sendToEmailChecked, setSendToEmail] = useState(false);
 	const handleConfirmation = () => {
-		// 	const destination = sendToPhoneChecked ? "phone" : "email";
-		// 	captureOTPDestination(destination);
+		const destination = sendToPhoneChecked ? "phone" : "email";
+		captureOTPDestination(destination);
 	};
 	return (
 		<form>

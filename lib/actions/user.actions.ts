@@ -10,6 +10,8 @@ export const signUpUserSchema = z.object({
 	email: z.string().email("Invalid email address"),
 });
 
+export type SignUpUser = z.infer<typeof signUpUserSchema>;
+
 export const validateUserInformation = async (
 	prevState: unknown,
 	formData: FormData
@@ -38,6 +40,7 @@ export const validateUserInformation = async (
 		return {
 			success: true,
 			message: "Ready to send OTP for verification",
+			data: validatedData as SignUpUser,
 		};
 	} catch (error) {
 		return {
