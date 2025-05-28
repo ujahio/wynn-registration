@@ -1,0 +1,10 @@
+-- CreateTable
+CREATE TABLE "OTPStore" (
+    "id" TEXT NOT NULL,
+    "contact" TEXT NOT NULL,
+    "otpHash" TEXT NOT NULL,
+    "expires_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "OTPStore_pkey" PRIMARY KEY ("id")
+);
