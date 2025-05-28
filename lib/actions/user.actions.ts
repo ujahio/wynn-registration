@@ -10,37 +10,19 @@ export const signUpUserSchema = z.object({
 	email: z.string().email("Invalid email address"),
 });
 
-export type SignUpUser = z.infer<typeof signUpUserSchema>;
+export type SignUpUser = z.infer<typeof signUpUserSchema> & {
+	otpChannel?: "email" | "sms" | null;
+	otpSessionId?: string | null;
+	verificationTicket?: string | null;
+};
 
-export const validateUserInformation = async (
-	prevState: unknown,
-	formData: FormData
-) => {
-	const formEntries = Array.from(formData.entries());
-	console.log("Form data entries:", formEntries);
+export const validateUserInformation = (formData: SignUpUser) => {
 	try {
-		const firstName = formData.get("first_name") as string;
-		const lastName = formData.get("last_name") as string;
-		const gender = formData.get("gender") as string;
-		const country = formData.get("country") as string;
-		const email = formData.get("email") as string;
-		const phone = formData.get("phone") as string;
-
-		const validatedData = signUpUserSchema.parse({
-			firstName,
-			lastName,
-			gender,
-			country,
-			email,
-			phone,
-		});
-
+		const validatedData = signUpUserSchema.parse(formData);
 		console.log("Validated data:", validatedData);
-
 		return {
 			success: true,
 			message: "Ready to send OTP for verification",
-			data: validatedData as SignUpUser,
 		};
 	} catch (error) {
 		return {

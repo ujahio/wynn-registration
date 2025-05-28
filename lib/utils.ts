@@ -7,9 +7,13 @@ export function cn(...inputs: ClassValue[]) {
 
 export const formatError = (error: any) => {
 	if (error.name === "ZodError") {
-		const fieldErrors = Object.keys(error.errors)
-			.map((field) => error.errors[field].message)
-			.join(". ");
+		console.log("eerror.errors", error.errors);
+		console.log("eerror.errors obj", Object.keys(error.errors));
+
+		const fieldErrors = Object.keys(error.errors).map((field) => ({
+			message: error.errors[field].message,
+			path: error.errors[field].path[0],
+		}));
 		return fieldErrors;
 	} else {
 		return typeof error.message === "string"
