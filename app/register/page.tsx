@@ -22,6 +22,10 @@ import {
 } from "@/lib/actions/user.actions";
 
 function RegistrationStepOne() {
+	const [validationErrors, setValidationErrors] = useState<
+		Record<string, string>
+	>({});
+
 	const [termsAccepted, setTermsAccepted] = useState(false);
 	const [privacyPolicyAccepted, setPrivacyPolicyAcceptance] = useState(false);
 	const [privTermsChecked, setPrivTermsChecked] = useState(false);
@@ -52,8 +56,11 @@ function RegistrationStepOne() {
 	};
 
 	const validateUserInfo = () => {
-		const formDataObj = validateUserInformation(formData);
-		console.log("formDataObj", formDataObj);
+		const result = validateUserInformation(formData);
+		console.log("Validation result:", result);
+		if (!result.success) setValidationErrors(result.message);
+		setValidationErrors({});
+		// else navigate to the next step
 	};
 
 	return (
@@ -85,7 +92,9 @@ function RegistrationStepOne() {
 							value={formData.firstName}
 							required
 							placeholder="Enter first name..."
-							className="w-full"
+							className={`w-full ${
+								"firstName" in validationErrors ? "border-red-500" : ""
+							}`}
 							onChange={(e) =>
 								setFormData((f: SignUpUser) => ({
 									...f,
@@ -115,7 +124,9 @@ function RegistrationStepOne() {
 							}
 							required
 							placeholder="Enter last name..."
-							className="w-full"
+							className={`w-full ${
+								"lastName" in validationErrors ? "border-red-500" : ""
+							}`}
 						/>
 					</div>
 				</div>
@@ -148,6 +159,11 @@ function RegistrationStepOne() {
 								<SelectItem value="other">Other</SelectItem>
 							</SelectContent>
 						</Select>
+						{"gender" in validationErrors && (
+							<p className="text-destructive text-sm">
+								{validationErrors.gender}
+							</p>
+						)}
 					</div>
 
 					<div className="relative">
@@ -182,6 +198,11 @@ function RegistrationStepOne() {
 								))}
 							</SelectContent>
 						</Select>
+						{"country" in validationErrors && (
+							<p className="text-destructive text-sm">
+								{validationErrors.country}
+							</p>
+						)}
 					</div>
 				</div>
 			</div>
@@ -205,7 +226,9 @@ function RegistrationStepOne() {
 							type="email"
 							required
 							placeholder="Enter email address..."
-							className="w-full"
+							className={`w-full ${
+								"email" in validationErrors ? "border-red-500" : ""
+							}`}
 							value={formData.email}
 							onChange={(e) =>
 								setFormData((f: SignUpUser) => ({
@@ -233,7 +256,9 @@ function RegistrationStepOne() {
 								name="phone"
 								type="tel"
 								required
-								className="rounded-l-none"
+								className={`rounded-l-none ${
+									"phone" in validationErrors ? "border-red-500" : ""
+								}`}
 								placeholder="(_ _ _) _ _ _"
 								value={formData.phone}
 								onChange={(e) =>
