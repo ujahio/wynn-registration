@@ -1,5 +1,7 @@
 "use client";
 import { useContext, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { getEmojiFlag, countries } from "countries-list";
 import { InfoIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -33,7 +35,7 @@ function RegistrationStepOne() {
 		RegisterContext
 	) as RegisterContextType;
 
-	console.log("formData", formData);
+	const router = useRouter();
 
 	const countryList = Object.entries(countries).map(([code, country]) => ({
 		code: code,
@@ -60,7 +62,7 @@ function RegistrationStepOne() {
 		console.log("Validation result:", result);
 		if (!result.success) setValidationErrors(result.message);
 		setValidationErrors({});
-		// else navigate to the next step
+		router.push("/register/otp-selection");
 	};
 
 	return (

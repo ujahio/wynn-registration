@@ -19,10 +19,28 @@ export type SignUpUser = z.infer<typeof signUpUserSchema> & {
 export const validateUserInformation = (formData: SignUpUser) => {
 	try {
 		const validatedData = signUpUserSchema.parse(formData);
-		console.log("Validated data:", validatedData);
 		return {
 			success: true,
 			message: "Ready to send OTP for verification",
+		};
+	} catch (error) {
+		return {
+			success: false,
+			message: formatError(error),
+		};
+	}
+};
+
+export const sendOtp = async (otpChannel: string) => {
+	// This function should implement the logic to send OTP
+	// For now, we will just return a mock response
+
+	console.log("Sending OTP with data:", otpChannel);
+
+	try {
+		return {
+			success: true,
+			message: "OTP sent successfully",
 		};
 	} catch (error) {
 		return {
