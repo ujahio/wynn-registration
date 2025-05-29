@@ -44,13 +44,15 @@ function OTPDestinations() {
 				return;
 			}
 
-			//navigate to verification
-			// toast.success(result.message);
+			setFormData((f: SignUpUser) => ({
+				...f,
+				otpSessionId: result.otpSessionId,
+			}));
+
 			toast.success(result.message, {
 				action: {
 					label: "Copy",
 					onClick: () => {
-						// Extract the OTP code from the message (assuming format "OTP 123456")
 						const otp = result.message.split(" ")[1];
 						navigator.clipboard
 							.writeText(otp)
