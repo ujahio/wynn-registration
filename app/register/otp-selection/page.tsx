@@ -13,12 +13,14 @@ import { Button } from "@/components/ui/button";
 import { RegisterContext, RegisterContextType } from "../layout";
 import { sendOtp, SignUpUser } from "@/lib/actions/user.actions";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 function OTPDestinations() {
 	const { formData, setFormData } = useContext(
 		RegisterContext
 	) as RegisterContextType;
 	const [isPending, startTransition] = useTransition();
+	const router = useRouter();
 
 	// TODO: route user to registration page if users loses registration details
 	// TODO: handle back button
@@ -33,7 +35,7 @@ function OTPDestinations() {
 			}
 			const result = await sendOtp({
 				otpChannel: formData.otpChannel,
-				otpVal: formData[formData.otpChannel as keyof SignUpUser] ?? "",
+				otpContact: formData[formData.otpChannel as keyof SignUpUser] ?? "",
 			});
 
 			if (!result.success) {
@@ -43,6 +45,7 @@ function OTPDestinations() {
 
 			//navigate to verification
 			toast.success(result.message);
+			router.push("/register/otp-verification");
 		});
 		return true;
 	};

@@ -34,28 +34,34 @@ export const validateUserInformation = (formData: SignUpUser) => {
 
 export const sendOtp = async ({
 	otpChannel,
-	otpVal,
+	otpContact,
 }: {
 	otpChannel: string;
-	otpVal: string;
+	otpContact: string;
 }) => {
 	try {
+		if (!otpChannel || !otpContact) {
+			throw new Error("OTP channel and contact are required.");
+		}
 		const response = await fetch("/api/send-otp", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ otpChannel, otpVal }),
+			body: JSON.stringify({ otpChannel, otpContact }),
 		});
-		if (!response.ok) {
-			const errorData = await response.json();
-			throw new Error(`Failed to send OTP: ${errorData.message}`);
+
+		const data = await response.json();
+		console.log("Response data:", data);
+
+		if (!response.ok || !data.success) {
+			throw new Error(data.message || "Failed to send OTP");
 		}
-		const res = await response.json();
+
 		return {
 			success: true,
-			message: "OTP sent successfully",
-			otpSessionId: res.otpSessionId,
+			message: `OTP ${data.otp}`,
+			otpSessionId: data.otpSessionId,
 		};
 	} catch (error) {
 		return {
