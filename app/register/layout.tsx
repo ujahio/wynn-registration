@@ -2,12 +2,7 @@
 
 import { createContext, useState } from "react";
 import Header from "@/components/header";
-import { SignUpUser } from "@/lib/actions/user.actions";
-
-export interface RegisterContextType {
-	formData: SignUpUser;
-	setFormData: React.Dispatch<React.SetStateAction<SignUpUser>>;
-}
+import { RegisterContextType, SignUpUser } from "@/lib/types";
 
 export const RegisterContext = createContext<RegisterContextType | null>(null);
 
