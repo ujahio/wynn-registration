@@ -107,7 +107,7 @@ function OTPDestinations() {
 					</CardContent>
 				</Card>
 				<div className="flex justify-between mt-3">
-					<Button>Back</Button>
+					<Button onClick={router.back}>Back</Button>
 					<Button disabled={isPending} onClick={handleConfirmation}>
 						{isPending ? "Submitting..." : "Next"}
 					</Button>
