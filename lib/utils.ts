@@ -41,3 +41,13 @@ export const encryptOTP = (otp: string): string => {
 	// Return salt + hash combined so we can verify later
 	return `${salt}:${hash}`;
 };
+
+export const verifyOTP = (encryptedOtp: string, otp: string): boolean => {
+	const [salt, storedHash] = encryptedOtp.split(":");
+	if (!salt || !storedHash) return false;
+
+	// Recompute the HMAC using the extracted salt
+	const hash = crypto.createHmac("sha256", salt).update(otp).digest("hex");
+
+	return hash === storedHash;
+};
