@@ -10,10 +10,11 @@ import {
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { RegisterContext, RegisterContextType } from "../layout";
-import { sendOtp, SignUpUser } from "@/lib/actions/user.actions";
+import { RegisterContext } from "../layout";
+import { sendOtp } from "@/lib/actions/registration.action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { RegisterContextType, SignUpUser } from "@/lib/types";
 
 function OTPDestinations() {
 	const { formData, setFormData } = useContext(

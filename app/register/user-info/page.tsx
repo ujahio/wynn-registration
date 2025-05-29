@@ -15,13 +15,26 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { RegisterContext, RegisterContextType } from "../layout";
+import { RegisterContext } from "../layout";
+import z from "zod";
+import { formatError } from "@/lib/utils";
+import { signUpUserSchema } from "@/lib/validators";
+import { RegisterContextType, SignUpUser } from "@/lib/types";
 
-import {
-	SignUpUser,
-	signUpUserSchema,
-	validateUserInformation,
-} from "@/lib/actions/user.actions";
+export const validateUserInformation = (formData: SignUpUser) => {
+	try {
+		const validatedData = signUpUserSchema.parse(formData);
+		return {
+			success: true,
+			message: "Ready to send OTP for verification",
+		};
+	} catch (error) {
+		return {
+			success: false,
+			message: formatError(error),
+		};
+	}
+};
 
 function RegistrationStepOne() {
 	const [validationErrors, setValidationErrors] = useState<
