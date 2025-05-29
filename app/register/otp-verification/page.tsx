@@ -30,7 +30,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { FormSchema } from "@/lib/validators";
-import { RegisterContextType } from "@/lib/types";
+import { RegisterContextType, SignUpUser } from "@/lib/types";
 import { useRouter } from "next/navigation";
 
 function OTPVerification() {
@@ -48,7 +48,6 @@ function OTPVerification() {
 	});
 
 	const handleConfirmation = (values: { otp: string }) => {
-		console.log("Form values:", values);
 		const { otp } = values;
 		startTransition(async () => {
 			const result = await verifyOtp({
@@ -60,6 +59,14 @@ function OTPVerification() {
 				toast.error(result.message);
 				return;
 			}
+
+			// NOTE: The verification ticket is saved in the frontend for demonstration purposes.
+			// In a real application, we would use this ticket to register the user on the backend.
+			// If there is time, I'll work on the backend registration flow.
+			setFormData((f: SignUpUser) => ({
+				...f,
+				verificationTicket: result.verificationTicket as string,
+			}));
 
 			toast.success(result.message);
 		});

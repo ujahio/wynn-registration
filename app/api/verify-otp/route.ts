@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/db/prisma";
-import { verifyOTP } from "@/lib/utils";
+import { generateVerificationTicket, verifyOTP } from "@/lib/utils";
 
 export async function POST(req: NextRequest, res: NextResponse) {
 	try {
@@ -30,16 +30,22 @@ export async function POST(req: NextRequest, res: NextResponse) {
 			if (!isOtpValid) {
 				throw new Error("Invalid OTP. Please try again.");
 			} else {
+				const verificationTicket: string = generateVerificationTicket({
+					contact: existingOtpSession.contact,
+					otpSessionId: existingOtpSession.id,
+				});
 				return NextResponse.json(
 					{
 						success: true,
 						message: "OTP verified.",
+						verificationTicket,
 					},
 					{ status: 200 }
 				);
 			}
 		} else {
 			throw new Error("OTP session not found or expired.");
+			// TODO: theres prrobably a need to redirect user to contacts page if otp session is not found or expired
 		}
 	} catch (error) {
 		console.error("Error sending OTP:", error);

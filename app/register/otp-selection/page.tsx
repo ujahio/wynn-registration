@@ -24,7 +24,6 @@ function OTPDestinations() {
 	const router = useRouter();
 
 	// TODO: route user to registration page if users loses registration details
-	// TODO: handle back button
 
 	const handleConfirmation = () => {
 		startTransition(async () => {

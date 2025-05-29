@@ -37,7 +37,7 @@ export const verifyOtp = async ({
 	otp: string;
 }) => {
 	try {
-		await verifyOtpRequest({
+		const response = await verifyOtpRequest({
 			otp,
 			otpSessionId,
 		});
@@ -45,6 +45,7 @@ export const verifyOtp = async ({
 		return {
 			success: true,
 			message: "OTP verification complete.",
+			verificationTicket: response.verificationTicket,
 		};
 	} catch (error) {
 		return {

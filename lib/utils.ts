@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -50,4 +51,26 @@ export const verifyOTP = (encryptedOtp: string, otp: string): boolean => {
 	const hash = crypto.createHmac("sha256", salt).update(otp).digest("hex");
 
 	return hash === storedHash;
+};
+
+export const generateVerificationTicket = ({
+	contact,
+	otpSessionId,
+}: {
+	contact: string;
+	otpSessionId: string;
+}) => {
+	const verificationTicket = jwt.sign(
+		{
+			sub: contact, // email or phone
+			type: "verification",
+			sessionId: otpSessionId, // the UUID from your OTPStore row
+		},
+		process.env.VERIFY_TOKEN_SECRET!, // a short-lived HMAC secret
+		{ expiresIn: "5m" }
+	);
+
+	console.log("Generated verification ticket:", verificationTicket);
+
+	return verificationTicket;
 };
