@@ -1,5 +1,6 @@
 import Header from "@/components/header";
 import { RegisterContextProvider } from "./registerContext";
+import Footer from "@/components/footer";
 
 export default function RootLayout({
 	children,
@@ -11,7 +12,7 @@ export default function RootLayout({
 			<div className="flex h-screen flex-col bg-gray-100">
 				<Header />
 				<main className="flex-1 wrapper">{children}</main>
-				{/* <Footer /> */}
+				<Footer />
 			</div>
 		</RegisterContextProvider>
 	);
