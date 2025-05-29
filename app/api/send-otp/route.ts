@@ -5,19 +5,14 @@ import { prisma } from "@/db/prisma";
 // TODO: WRITE A SCRIPT TO PURGE OLD OTPs
 // TODO: Send the OTP to the user via SMS/Email
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
 	try {
 		const event = await req.json();
 		const { otpChannel, otpContact } = event;
 
 		if (!otpChannel || !otpContact) {
-			return NextResponse.json(
-				{
-					success: false,
-					message: "OTP channel and value are required.",
-				},
-				{ status: 400 }
-			);
+			console.error("OTP channel and value are required.");
+			throw new Error("Failed to send OTP");
 		}
 
 		const existingOtp = await prisma.oTPStore.findFirst({
@@ -30,19 +25,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
 		if (existingOtp) {
 			// If an OTP already exists for this contact, return an error
-			return NextResponse.json(
-				{
-					success: false,
-					message: "An OTP has already been sent to this contact.",
-				},
-				{ status: 400 }
-			);
+			console.error("An OTP has already been sent to this contact.");
+			throw new Error("Failed to send OTP");
 		}
 
 		const otp = generateOTP();
 		const otpHash = encryptOTP(otp);
 
-		const result = await prisma.oTPStore.create({
+		const otpStoreItem = await prisma.oTPStore.create({
 			data: {
 				channel: otpChannel,
 				contact: otpContact,
@@ -52,17 +42,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
 			},
 		});
 
-		// Console.log only exists for the sake of demonstration.
-		// This will not be a production-ready implementation
-		console.log(`OTP for ${otpChannel}: ${otp}`);
-
-		if (!result) {
+		if (!otpStoreItem.id) {
 			throw new Error("Failed to create OTP session");
 		}
 		return NextResponse.json(
 			{
 				success: true,
-				otpSessionId: result.id,
+				otpSessionId: otpStoreItem.id,
 				otp,
 			},
 			{ status: 200 }
