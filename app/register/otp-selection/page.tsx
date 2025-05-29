@@ -1,20 +1,19 @@
 "use client";
-import { useActionState, useContext, useTransition } from "react";
+import { useContext, useTransition } from "react";
 import {
 	Card,
 	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { RegisterContext } from "../layout";
 import { sendOtp } from "@/lib/actions/registration.action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { RegisterContextType, SignUpUser } from "@/lib/types";
+import { RegisterContext } from "../registerContext";
 
 function OTPDestinations() {
 	const { formData, setFormData } = useContext(

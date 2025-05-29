@@ -7,7 +7,6 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { useContext, useTransition } from "react";
-import { RegisterContext } from "../layout";
 import {
 	InputOTP,
 	InputOTPGroup,
@@ -32,6 +31,7 @@ import {
 import { FormSchema } from "@/lib/validators";
 import { RegisterContextType, SignUpUser } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { RegisterContext } from "../registerContext";
 
 function OTPVerification() {
 	const { formData, setFormData } = useContext(

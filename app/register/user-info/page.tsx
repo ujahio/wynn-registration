@@ -15,15 +15,14 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { RegisterContext } from "../layout";
-import z from "zod";
 import { formatError } from "@/lib/utils";
 import { signUpUserSchema } from "@/lib/validators";
 import { RegisterContextType, SignUpUser } from "@/lib/types";
+import { RegisterContext } from "../registerContext";
 
-export const validateUserInformation = (formData: SignUpUser) => {
+const validateUserInformation = (formData: SignUpUser) => {
 	try {
-		const validatedData = signUpUserSchema.parse(formData);
+		signUpUserSchema.parse(formData);
 		return {
 			success: true,
 			message: "Ready to send OTP for verification",
