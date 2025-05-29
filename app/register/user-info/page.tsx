@@ -79,8 +79,10 @@ function RegistrationStepOne() {
 
 	return (
 		<div className="w-full max-w-3xl mx-auto p-6">
-			<h1 className="text-4xl font-serif mb-1 text-center">Registration</h1>
-			<p className="text-right text-gray-600 mb-4">Step 1 of 3</p>
+			<div className="flex justify-between items-center mb-6">
+				<h1 className="text-4xl font-serif mb-1 text-center">Registration</h1>
+				<p className="text-right text-gray-600 mb-4">Step 1 of 3</p>
+			</div>
 
 			<p className="text-gray-700 mb-6">
 				Please enter below information to create your account.
