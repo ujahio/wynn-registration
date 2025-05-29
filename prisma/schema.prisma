@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider        = "prisma-client-js"
   output          = "../lib/generated/prisma"
@@ -18,7 +12,11 @@ datasource db {
 model OTPStore {
   id         String   @id @default(uuid())
   contact    String
+  channel    String
   otpHash    String
   expires_at DateTime @default(now())
   created_at DateTime @default(now())
+
+  @@index([channel, contact]) // fast lookup by channel+contact
+  @@index([expires_at]) // efficient cleanup of expired entries
 }

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "OTPStore" ALTER COLUMN "channel" DROP DEFAULT;
