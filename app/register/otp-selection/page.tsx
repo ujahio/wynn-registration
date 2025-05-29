@@ -44,7 +44,20 @@ function OTPDestinations() {
 			}
 
 			//navigate to verification
-			toast.success(result.message);
+			// toast.success(result.message);
+			toast.success(result.message, {
+				action: {
+					label: "Copy",
+					onClick: () => {
+						// Extract the OTP code from the message (assuming format "OTP 123456")
+						const otp = result.message.split(" ")[1];
+						navigator.clipboard
+							.writeText(otp)
+							.then(() => toast.success("OTP copied to clipboard"))
+							.catch(() => toast.error("Failed to copy OTP"));
+					},
+				},
+			});
 			router.push("/register/otp-verification");
 		});
 		return true;
