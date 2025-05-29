@@ -15,7 +15,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { RegisterContext, RegisterContextType } from "./layout";
+import { RegisterContext, RegisterContextType } from "../layout";
 
 import {
 	SignUpUser,
