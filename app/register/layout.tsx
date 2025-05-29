@@ -1,5 +1,3 @@
-"use client";
-
 import Header from "@/components/header";
 import { RegisterContextProvider } from "./registerContext";
 
