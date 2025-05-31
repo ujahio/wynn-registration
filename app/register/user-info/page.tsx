@@ -72,7 +72,10 @@ function RegistrationStepOne() {
 	const validateUserInfo = () => {
 		const result = validateUserInformation(formData);
 		console.log("Validation result:", result);
-		if (!result.success) setValidationErrors(result.message);
+		if (!result.success) {
+			setValidationErrors(result.message);
+			return;
+		}
 		setValidationErrors({});
 		router.push("/register/otp-selection");
 	};
@@ -80,8 +83,18 @@ function RegistrationStepOne() {
 	return (
 		<div className="w-full max-w-3xl mx-auto p-6">
 			<div className="flex justify-between items-center mb-6">
-				<h1 className="text-4xl font-serif mb-1 text-center">Registration</h1>
-				<p className="text-right text-gray-600 mb-4">Step 1 of 3</p>
+				<h1
+					className="text-4xl font-serif mb-1 text-center"
+					data-testid="registration-header"
+				>
+					Registration
+				</h1>
+				<p
+					className="text-right text-gray-600 mb-4"
+					data-testid="step-indicator"
+				>
+					Step 1 of 3
+				</p>
 			</div>
 
 			<p className="text-gray-700 mb-6">
@@ -89,7 +102,10 @@ function RegistrationStepOne() {
 			</p>
 
 			<div className="mb-8">
-				<h2 className="text-xl font-serif border-b border-gray-200 pb-2 mb-4">
+				<h2
+					className="text-xl font-serif border-b border-gray-200 pb-2 mb-4"
+					data-testid="personal-info-section"
+				>
 					Personal Info
 				</h2>
 
@@ -108,6 +124,7 @@ function RegistrationStepOne() {
 							value={formData.firstName}
 							required
 							placeholder="Enter first name..."
+							data-testid="input-first-name"
 							className={`w-full ${
 								"firstName" in validationErrors ? "border-red-500" : ""
 							}`}
@@ -140,6 +157,7 @@ function RegistrationStepOne() {
 							}
 							required
 							placeholder="Enter last name..."
+							data-testid="input-last-name"
 							className={`w-full ${
 								"lastName" in validationErrors ? "border-red-500" : ""
 							}`}
@@ -158,6 +176,7 @@ function RegistrationStepOne() {
 						<Select
 							name="gender"
 							required
+							data-testid="select-gender"
 							value={formData.gender}
 							onValueChange={(gender) =>
 								setFormData((f: SignUpUser) => ({
@@ -192,6 +211,7 @@ function RegistrationStepOne() {
 						<Select
 							name="country"
 							required
+							data-testid="select-country"
 							value={formData.country}
 							onValueChange={(country) =>
 								setFormData((f: SignUpUser) => ({
@@ -224,7 +244,10 @@ function RegistrationStepOne() {
 			</div>
 
 			<div className="mb-8">
-				<h2 className="text-xl font-serif border-b border-gray-200 pb-2 mb-4">
+				<h2
+					className="text-xl font-serif border-b border-gray-200 pb-2 mb-4"
+					data-testid="contact-details-section"
+				>
 					Contact Details
 				</h2>
 
@@ -242,6 +265,7 @@ function RegistrationStepOne() {
 							type="email"
 							required
 							placeholder="Enter email address..."
+							data-testid="input-email"
 							className={`w-full ${
 								"email" in validationErrors ? "border-red-500" : ""
 							}`}
@@ -272,6 +296,7 @@ function RegistrationStepOne() {
 								name="phone"
 								type="tel"
 								required
+								data-testid="input-phone"
 								className={`rounded-l-none ${
 									"phone" in validationErrors ? "border-red-500" : ""
 								}`}
@@ -293,6 +318,7 @@ function RegistrationStepOne() {
 				<Checkbox
 					id="terms"
 					checked={privTermsChecked}
+					data-testid="checkbox-terms"
 					onCheckedChange={(checked) => {
 						setPrivTermsChecked(checked === true);
 					}}
@@ -306,6 +332,7 @@ function RegistrationStepOne() {
 						I agree to the{" "}
 						<a
 							href="#"
+							data-testid="terms-link"
 							className={`underline ${
 								!termsAccepted ? "text-green-800" : "text-gray-400"
 							}`}
@@ -316,6 +343,7 @@ function RegistrationStepOne() {
 						and{" "}
 						<a
 							href="#"
+							data-testid="privacy-link"
 							className={`underline ${
 								!privacyPolicyAccepted ? "text-green-800" : "text-gray-400"
 							}`}
@@ -330,8 +358,8 @@ function RegistrationStepOne() {
 
 			<Button
 				type="submit"
+				data-testid="next-button"
 				className="w-full bg-green-800 hover:bg-green-900 text-white py-6"
-				disabled={!privTermsChecked || !termsAccepted || !privacyPolicyAccepted}
 				onClick={validateUserInfo}
 			>
 				NEXT
