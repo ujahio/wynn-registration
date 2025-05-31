@@ -12,26 +12,10 @@ export const sendOtpRequest = async ({
 		throw new Error("Error sending OTP");
 	}
 
-	const headersList = await headers();
-	const host = headersList.get("host") || "localhost:3000";
-	const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-
-	const response = await fetch(`${protocol}://${host}/api/send-otp`, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({ otpChannel, otpContact }),
+	return POST_OTP_REQUEST_SERVICE({
+		body: { otpChannel, otpContact },
+		endpoint: "send-otp",
 	});
-
-	const data = await response.json();
-
-	if (!response.ok || !data.success) {
-		console.error("Error sending OTP:", data);
-		throw new Error(data.message || "Failed to send OTP");
-	}
-
-	return data;
 };
 
 export const verifyOtpRequest = async ({
@@ -46,22 +30,35 @@ export const verifyOtpRequest = async ({
 		throw new Error("Error verifying  OTP");
 	}
 
+	return POST_OTP_REQUEST_SERVICE({
+		body: { otpSessionId, otp },
+		endpoint: "verify-otp",
+	});
+};
+
+export const POST_OTP_REQUEST_SERVICE = async ({
+	body,
+	endpoint,
+}: {
+	body: Record<string, string>;
+	endpoint: string;
+}) => {
 	const headersList = await headers();
 	const host = headersList.get("host") || "localhost:3000";
 	const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
 
-	const response = await fetch(`${protocol}://${host}/api/verify-otp`, {
+	const response = await fetch(`${protocol}://${host}/api/${endpoint}`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify({ otpSessionId, otp }),
+		body: JSON.stringify(body),
 	});
 
 	const data = await response.json();
-	if (!response.ok || !data.success) {
-		console.error("Error verifying OTP:", data);
-		throw new Error(data.message || "Failed to verify OTP");
+	if (!data.success) {
+		console.error("Error:", data.message);
+		throw new Error("Failed to verify OTP");
 	}
 
 	return data;
