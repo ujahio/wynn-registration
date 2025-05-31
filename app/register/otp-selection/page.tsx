@@ -63,79 +63,102 @@ function OTPSelections() {
 	};
 	return (
 		<div className="w-full max-w-3xl mx-auto p-6">
-			<div className="flex justify-between items-center mb-6">
-				<h1
-					className="text-4xl font-serif mb-1 text-center"
-					data-testid="registration-header"
-				>
+			<div className="flex justify-between items-center mb-10">
+				<h1 className="text-5xl font-serif" data-testid="registration-header">
 					Registration
 				</h1>
-				<p
-					className="text-right text-gray-600 mb-4"
-					data-testid="step-indicator"
-				>
+				<p className="text-xl text-gray-600" data-testid="step-indicator">
 					Step 2 of 3
 				</p>
 			</div>
 
-			<p className="text-gray-700 mb-6">
+			<p className="text-gray-700 mb-8 text-lg">
 				Please enter below information to create your account.
 			</p>
-			<div className="mb-8">
+			<div className="mb-12">
 				<h2
-					className="text-xl font-serif border-b border-gray-200 pb-2 mb-4"
+					className="text-2xl font-serif border-b border-gray-300 pb-3 mb-6"
 					data-testid="otp-verification-section"
 				>
 					OTP Verification
 				</h2>
-				<Card>
-					<CardHeader>
-						<CardTitle data-testid="card-title">Send Code</CardTitle>
-						<CardDescription>
-							<p>How would you like to receive the code?</p>
+				<Card className="border-0 shadow-md">
+					<CardHeader className="text-center pb-2">
+						<CardTitle className="text-3xl font-serif" data-testid="card-title">
+							Send Code
+						</CardTitle>
+						<CardDescription className="text-center mt-4 text-lg text-gray-500">
+							How would you like to receive the code?
 						</CardDescription>
 					</CardHeader>
-					<CardContent className="flex justify-between">
-						<div className="flex items-center space-x-2">
-							<Checkbox
-								id="phone"
-								data-testid="checkbox-phone"
-								checked={formData.otpChannel === "phone"}
-								onCheckedChange={(checked) => {
-									setFormData((f: SignUpUser) => ({
-										...f,
-										otpChannel: checked ? "phone" : null,
-									}));
-								}}
-							/>
-							<p data-testid="phone-option-text">Send to Phone</p>
-						</div>
-						<div className="flex items-center space-x-2">
-							<Checkbox
-								id="email"
-								data-testid="checkbox-email"
-								checked={formData.otpChannel === "email"}
-								onCheckedChange={(checked) => {
-									setFormData((f: SignUpUser) => ({
-										...f,
-										otpChannel: checked ? "email" : null,
-									}));
-								}}
-							/>
-							<p data-testid="email-option-text">Send to Email</p>
+					<CardContent className="py-6">
+						<div className="flex justify-center items-center gap-16">
+							<div className="flex items-center space-x-3">
+								<div className="relative">
+									<Checkbox
+										id="phone"
+										className="rounded-full h-6 w-6 border-2"
+										data-testid="checkbox-phone"
+										checked={formData.otpChannel === "phone"}
+										onCheckedChange={(checked) => {
+											setFormData((f: SignUpUser) => ({
+												...f,
+												otpChannel: checked ? "phone" : null,
+											}));
+										}}
+									/>
+								</div>
+								<label
+									htmlFor="phone"
+									className="text-lg"
+									data-testid="phone-option-text"
+								>
+									Send to Phone
+								</label>
+							</div>
+
+							<div className="flex items-center space-x-3">
+								<div className="relative">
+									<Checkbox
+										id="email"
+										className="rounded-full h-6 w-6 border-2"
+										data-testid="checkbox-email"
+										checked={formData.otpChannel === "email"}
+										onCheckedChange={(checked) => {
+											setFormData((f: SignUpUser) => ({
+												...f,
+												otpChannel: checked ? "email" : null,
+											}));
+										}}
+									/>
+								</div>
+								<label
+									htmlFor="email"
+									className="text-lg"
+									data-testid="email-option-text"
+								>
+									Send to Email
+								</label>
+							</div>
 						</div>
 					</CardContent>
 				</Card>
-				<div className="flex justify-between mt-3">
-					<Button data-testid="back-button" onClick={router.back}>
-						Back
+				<div className="flex justify-between mt-6">
+					<Button
+						variant="outline"
+						className="w-[180px] h-[60px] text-lg border-2 font-medium"
+						data-testid="back-button"
+						onClick={router.back}
+					>
+						BACK
 					</Button>
 					<Button
+						className="w-[180px] h-[60px] text-lg font-medium bg-teal-700 hover:bg-teal-800"
 						data-testid="next-button"
 						disabled={isPending}
 						onClick={handleConfirmation}
 					>
-						{isPending ? "Submitting..." : "Next"}
+						{isPending ? "Submitting..." : "NEXT"}
 					</Button>
 				</div>
 			</div>
