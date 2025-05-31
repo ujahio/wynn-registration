@@ -8,7 +8,7 @@
 		"start": "next start",
 		"lint": "next lint",
 		"postinstall": "prisma generate",
-		"test:e2e": "playwright test --config=playwright.config.ts",
+		"test:e2e": "playwright test --project=chromium",
 		"start:ci": "next start -p 3000"
 	},
 	"dependencies": {
