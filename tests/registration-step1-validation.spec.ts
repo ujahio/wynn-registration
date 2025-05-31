@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe.skip("Registration Page - Structure Tests", async () => {
+test.describe("Registration Page - Structure Tests", async () => {
 	// Setup for each test - navigate to the registration page
 	test.beforeEach(async ({ page }) => {
 		await page.goto("http://localhost:3000/register/user-info");
@@ -34,12 +34,12 @@ test.describe.skip("Registration Page - Structure Tests", async () => {
 });
 
 // Form Field Validation Tests
-test.describe.skip("Registration Form - Field Validation Tests", () => {
+test.describe("Registration Form - Field Validation Tests", () => {
 	test.beforeEach(async ({ page }) => {
 		await page.goto("http://localhost:3000/register/user-info");
 	});
 
-	test.skip("should validate First Name field and show red border when empty", async ({
+	test("should validate First Name field and show red border when empty", async ({
 		page,
 	}) => {
 		const nextButton = await page.getByTestId("next-button");
@@ -64,7 +64,7 @@ test.describe.skip("Registration Form - Field Validation Tests", () => {
 		await expect(page).toHaveURL("http://localhost:3000/register/user-info");
 	});
 
-	test.skip("should validate Last Name field and show red border when empty", async ({
+	test("should validate Last Name field and show red border when empty", async ({
 		page,
 	}) => {
 		// Fill first name but leave last name empty
@@ -95,7 +95,7 @@ test.describe.skip("Registration Form - Field Validation Tests", () => {
 		await expect(page).toHaveURL("http://localhost:3000/register/user-info");
 	});
 
-	test.skip("should validate Gender selection and show error message", async ({
+	test("should validate Gender selection and show error message", async ({
 		page,
 	}) => {
 		// Fill name fields but leave gender unselected
@@ -127,7 +127,7 @@ test.describe.skip("Registration Form - Field Validation Tests", () => {
 		await expect(page).toHaveURL("http://localhost:3000/register/user-info");
 	});
 
-	test.skip("should validate Country selection and show error message", async ({
+	test("should validate Country selection and show error message", async ({
 		page,
 	}) => {
 		await page.getByTestId("input-first-name").fill("John");
@@ -152,7 +152,7 @@ test.describe.skip("Registration Form - Field Validation Tests", () => {
 		await expect(page).toHaveURL("http://localhost:3000/register/user-info");
 	});
 
-	test.skip("should validate Email field format and show red border when invalid", async ({
+	test("should validate Email field format and show red border when invalid", async ({
 		page,
 	}) => {
 		await page.getByTestId("input-first-name").fill("John");
@@ -184,7 +184,7 @@ test.describe.skip("Registration Form - Field Validation Tests", () => {
 		await expect(page).toHaveURL("http://localhost:3000/register/user-info");
 	});
 
-	test.skip("should validate Phone number field and show red border when empty", async ({
+	test("should validate Phone number field and show red border when empty", async ({
 		page,
 	}) => {
 		await page.getByTestId("input-first-name").fill("John");
