@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { RegisterContextType, SignUpUser } from "@/lib/types";
 import { RegisterContext } from "../registerContext";
 
-function OTPDestinations() {
+function OTPSelections() {
 	const { formData, setFormData } = useContext(
 		RegisterContext
 	) as RegisterContextType;
@@ -120,4 +120,4 @@ function OTPDestinations() {
 	);
 }
 
-export default OTPDestinations;
+export default OTPSelections;
