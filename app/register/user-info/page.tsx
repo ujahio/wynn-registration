@@ -71,7 +71,6 @@ function RegistrationStepOne() {
 
 	const validateUserInfo = () => {
 		const result = validateUserInformation(formData);
-		console.log("Validation result:", result);
 		if (!result.success) {
 			setValidationErrors(result.message);
 			return;
@@ -173,29 +172,41 @@ function RegistrationStepOne() {
 							</Label>
 							<InfoIcon className="h-5 w-5 text-gray-400" />
 						</div>
-						<Select
-							name="gender"
-							required
-							data-testid="select-gender"
-							value={formData.gender}
-							onValueChange={(gender) =>
-								setFormData((f: SignUpUser) => ({
-									...f,
-									gender,
-								}))
-							}
-						>
-							<SelectTrigger className="w-full">
-								<SelectValue placeholder="Select gender..." />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="male">Male</SelectItem>
-								<SelectItem value="female">Female</SelectItem>
-								<SelectItem value="other">Other</SelectItem>
-							</SelectContent>
-						</Select>
+						<div data-testid="select-gender">
+							{" "}
+							<Select
+								name="gender"
+								required
+								value={formData.gender}
+								onValueChange={(gender) =>
+									setFormData((f: SignUpUser) => ({
+										...f,
+										gender,
+									}))
+								}
+							>
+								<SelectTrigger className="w-full">
+									<SelectValue placeholder="Select gender..." />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem data-testid="male" value="male">
+										Male
+									</SelectItem>
+									<SelectItem data-testid="female" value="female">
+										Female
+									</SelectItem>
+									<SelectItem data-testid="other" value="other">
+										Other
+									</SelectItem>
+								</SelectContent>
+							</Select>
+						</div>
+
 						{"gender" in validationErrors && (
-							<p className="text-destructive text-sm">
+							<p
+								className="text-destructive text-sm"
+								data-testid="gender-error-message"
+							>
 								{validationErrors.gender}
 							</p>
 						)}
@@ -208,34 +219,39 @@ function RegistrationStepOne() {
 							</Label>
 							<InfoIcon className="h-5 w-5 text-gray-400" />
 						</div>
-						<Select
-							name="country"
-							required
-							data-testid="select-country"
-							value={formData.country}
-							onValueChange={(country) =>
-								setFormData((f: SignUpUser) => ({
-									...f,
-									country,
-								}))
-							}
-						>
-							<SelectTrigger className="w-full">
-								<SelectValue placeholder="Select residence country..." />
-							</SelectTrigger>
-							<SelectContent>
-								{countryList.map((country) => (
-									<SelectItem
-										key={country.code}
-										value={country.name.toString()}
-									>
-										{country.emoji} {country.name}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
+						<div data-testid="select-country">
+							<Select
+								name="country"
+								required
+								value={formData.country}
+								onValueChange={(country) =>
+									setFormData((f: SignUpUser) => ({
+										...f,
+										country,
+									}))
+								}
+							>
+								<SelectTrigger className="w-full">
+									<SelectValue placeholder="Select residence country..." />
+								</SelectTrigger>
+								<SelectContent>
+									{countryList.map((country) => (
+										<SelectItem
+											key={country.code}
+											value={country.name.toString()}
+										>
+											{country.emoji} {country.name}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+						</div>
+
 						{"country" in validationErrors && (
-							<p className="text-destructive text-sm">
+							<p
+								className="text-destructive text-sm"
+								data-testid="country-error-message"
+							>
 								{validationErrors.country}
 							</p>
 						)}
