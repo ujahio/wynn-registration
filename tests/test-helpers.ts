@@ -1,3 +1,4 @@
+import { prisma } from "@/db/prisma";
 import { Page } from "@playwright/test";
 
 export async function fillAndSubmitUserInfoForm(page: Page): Promise<void> {
@@ -24,4 +25,44 @@ export async function fillAndSubmitUserInfoForm(page: Page): Promise<void> {
 
 	// Submit form
 	await page.getByTestId("next-button").click();
+}
+
+export async function captureOtpSessionId(page: Page): Promise<string> {
+	const sessionIdPromise = new Promise<string>((resolve) => {
+		page.once("response", async (response) => {
+			if (
+				response.url().includes("/register/otp-selection") &&
+				response.request().method() === "POST"
+			) {
+				try {
+					const json = await response.json();
+					console.log("Response from /register/otp-selection:", json);
+					if (json.success && json.otpSessionId) {
+						console.log("Captured OTP session ID:", json.otpSessionId);
+						resolve(json.otpSessionId);
+					} else {
+						resolve("");
+					}
+				} catch (error) {
+					console.error("Error parsing response:", error);
+					resolve("");
+				}
+			}
+		});
+	});
+
+	return sessionIdPromise;
+}
+
+export async function cleanupOtpSession(sessionId: string): Promise<void> {
+	if (!sessionId) return;
+
+	try {
+		await prisma.oTPStore.delete({
+			where: { id: sessionId },
+		});
+		console.log(`Cleaned up OTP session: ${sessionId}`);
+	} catch (error) {
+		console.error(`Failed to clean up OTP session ${sessionId}:`, error);
+	}
 }
