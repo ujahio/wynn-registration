@@ -146,14 +146,14 @@ function OTPSelections() {
 				<div className="flex justify-between mt-6">
 					<Button
 						variant="outline"
-						className="w-[180px] h-[60px] text-lg border-2 font-medium"
+						className=" bg-green-800 hover:bg-green-900 text-white py-6 w-48 h-16"
 						data-testid="back-button"
 						onClick={router.back}
 					>
 						BACK
 					</Button>
 					<Button
-						className="w-[180px] h-[60px] text-lg font-medium bg-teal-700 hover:bg-teal-800"
+						className=" bg-green-800 hover:bg-green-900 text-white py-6 w-48 h-16"
 						data-testid="next-button"
 						disabled={isPending}
 						onClick={handleConfirmation}
