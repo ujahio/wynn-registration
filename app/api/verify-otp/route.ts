@@ -2,6 +2,36 @@ import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/db/prisma";
 import { generateVerificationTicket, verifyOTP } from "@/lib/utils";
 
+/**
+ * Handles the POST request to verify an OTP.
+ *
+ * @async
+ * @function POST
+ * @param {NextRequest} req - The incoming HTTP request object.
+ * @returns {Promise<NextResponse>} - The HTTP response containing the verification ticket if OTP is valid.
+ *
+ * @throws {Error} If the OTP or OTP session ID is missing, if the OTP session is expired or not found, or if the OTP is invalid.
+ *
+ * @example
+ * // Request body:
+ * {
+ *   "otp": "123456",
+ *   "otpSessionId": "abc123"
+ * }
+ *
+ * // Successful response:
+ * {
+ *   "success": true,
+ *   "message": "OTP verified.",
+ *   "verificationTicket": "verification_ticket_string"
+ * }
+ *
+ * // Error response:
+ * {
+ *   "success": false,
+ *   "message": "Failed to verify OTP"
+ * }
+ */
 export async function POST(req: NextRequest) {
 	try {
 		const event: {
@@ -32,7 +62,7 @@ export async function POST(req: NextRequest) {
 				throw new Error("Invalid OTP. Please try again.");
 			} else {
 				const verificationTicket: string = generateVerificationTicket({
-					contact: existingOtpSession.contact,
+					contact: existingOtpSession.contact as "email" | "phone",
 					otpSessionId: existingOtpSession.id,
 				});
 				return NextResponse.json(
