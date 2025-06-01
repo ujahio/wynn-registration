@@ -4,7 +4,10 @@ import { generateVerificationTicket, verifyOTP } from "@/lib/utils";
 
 export async function POST(req: NextRequest) {
 	try {
-		const event = await req.json();
+		const event: {
+			otp: string;
+			otpSessionId: string;
+		} = await req.json();
 		const { otp, otpSessionId } = event;
 
 		if (!otpSessionId || !otp) {

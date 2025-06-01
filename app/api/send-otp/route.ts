@@ -7,7 +7,11 @@ import { prisma } from "@/db/prisma";
 
 export async function POST(req: NextRequest) {
 	try {
-		const event = await req.json();
+		const event: {
+			otpChannel: string;
+			otpContact: string;
+		} = await req.json();
+
 		const { otpChannel, otpContact } = event;
 
 		if (!otpChannel || !otpContact) {
