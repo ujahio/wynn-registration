@@ -22,8 +22,6 @@ function OTPSelections() {
 	const [isPending, startTransition] = useTransition();
 	const router = useRouter();
 
-	// TODO: route user to registration page if users loses registration details
-
 	const handleConfirmation = () => {
 		startTransition(async () => {
 			if (!formData.otpChannel) {
