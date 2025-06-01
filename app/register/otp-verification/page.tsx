@@ -71,38 +71,46 @@ function OTPVerification() {
 			toast.success(result.message);
 		});
 	};
+
 	return (
 		<Form {...form}>
 			<form method="post" onSubmit={form.handleSubmit(handleConfirmation)}>
 				<div className="w-full max-w-3xl mx-auto p-6">
 					<div className="flex justify-between items-center mb-6">
-						<h1 className="text-4xl font-serif mb-1 text-center">
+						<h1 className="text-4xl font-serif mb-1 text-center text-gray-900">
 							Registration
 						</h1>
-						<p className="text-right text-gray-600 mb-4">Step 3 of 3</p>
+						<p className="text-right text-gray-600 mb-4 text-sm">Step 3 of 3</p>
 					</div>
 
-					<p className="text-gray-700 mb-6">
+					<p className="text-gray-700 mb-6 text-base">
 						Please enter below information to create your account.
 					</p>
+
 					<div className="mb-8">
-						<h2 className="text-xl font-serif border-b border-gray-200 pb-2 mb-4">
+						<h2 className="text-xl font-serif border-b-2 border-gray-300 pb-2 mb-4 text-gray-800">
 							OTP Verification
 						</h2>
-						<Card>
-							<CardHeader>
-								<CardTitle>{`Please check your ${
-									formData.otpChannel === "email" ? "email" : "phone number"
-								}`}</CardTitle>
-								<CardDescription>
-									<p>{`We sent a code to: ${
-										formData.otpChannel === "email"
-											? formData.email
-											: formData.phone
-									}`}</p>
+
+						<Card className="border border-gray-200 rounded-lg bg-white">
+							<CardHeader className="text-center pt-4 pb-2">
+								<CardTitle className="text-2xl font-semibold text-gray-900 mb-1">
+									{`Please check your ${
+										formData.otpChannel === "email" ? "email" : "phone number"
+									}`}
+								</CardTitle>
+								<CardDescription className="text-gray-500 text-sm">
+									<p>
+										{`We sent a code to: ${
+											formData.otpChannel === "email"
+												? formData.email
+												: formData.phone
+										}`}
+									</p>
 								</CardDescription>
 							</CardHeader>
-							<CardContent>
+
+							<CardContent className="pt-4 pb-4 flex flex-col items-center">
 								<FormField
 									control={form.control}
 									name="otp"
@@ -110,21 +118,72 @@ function OTPVerification() {
 										<FormItem>
 											<FormControl>
 												<InputOTP maxLength={6} {...field}>
-													<InputOTPGroup>
-														<InputOTPSlot index={0} />
-														<InputOTPSlot index={1} />
-														<InputOTPSlot index={2} />
+													<InputOTPGroup className="flex justify-center space-x-2 mb-2">
+														<InputOTPSlot
+															index={0}
+															className="w-12 h-12 border-2 rounded-md bg-white text-xl text-gray-800 text-center focus:outline-none focus:ring-2 focus:ring-blue-300"
+															style={{
+																borderColor: "#674D3A",
+																lineHeight: "3rem",
+															}}
+														/>
+														<InputOTPSlot
+															index={1}
+															className="w-12 h-12 border-2 rounded-md bg-white text-xl text-gray-800 text-center focus:outline-none focus:ring-2 focus:ring-blue-300"
+															style={{
+																borderColor: "#674D3A",
+																lineHeight: "3rem",
+															}}
+														/>
+														<InputOTPSlot
+															index={2}
+															className="w-12 h-12 border-2 rounded-md bg-white text-xl text-gray-800 text-center focus:outline-none focus:ring-2 focus:ring-blue-300"
+															style={{
+																borderColor: "#674D3A",
+																lineHeight: "3rem",
+															}}
+														/>
 													</InputOTPGroup>
-													<InputOTPSeparator />
-													<InputOTPGroup>
-														<InputOTPSlot index={3} />
-														<InputOTPSlot index={4} />
-														<InputOTPSlot index={5} />
+
+													<InputOTPSeparator className="mx-2" />
+
+													<InputOTPGroup className="flex justify-center space-x-2 mb-2">
+														<InputOTPSlot
+															index={3}
+															className="w-12 h-12 border-2 rounded-md bg-white text-xl text-gray-800 text-center focus:outline-none focus:ring-2 focus:ring-blue-300"
+															style={{
+																borderColor: "#674D3A",
+																lineHeight: "3rem",
+															}}
+														/>
+														<InputOTPSlot
+															index={4}
+															className="w-12 h-12 border-2 rounded-md bg-white text-xl text-gray-800 text-center focus:outline-none focus:ring-2 focus:ring-blue-300"
+															style={{
+																borderColor: "#674D3A",
+																lineHeight: "3rem",
+															}}
+														/>
+														<InputOTPSlot
+															index={5}
+															className="w-12 h-12 border-2 rounded-md bg-white text-xl text-gray-800 text-center focus:outline-none focus:ring-2 focus:ring-blue-300"
+															style={{
+																borderColor: "#674D3A",
+																lineHeight: "3rem",
+															}}
+														/>
 													</InputOTPGroup>
 												</InputOTP>
 											</FormControl>
-											<FormDescription>
-												Didn't get a code? Click to resend{" "}
+
+											<FormDescription className="text-center text-gray-500 text-sm mt-2">
+												Didn’t get a code?{" "}
+												<a
+													onClick={() => {}}
+													className="text-blue-600 underline hover:text-blue-700 cursor-pointer"
+												>
+													Click to resend.
+												</a>
 											</FormDescription>
 											<FormMessage />
 										</FormItem>
@@ -132,9 +191,18 @@ function OTPVerification() {
 								/>
 							</CardContent>
 						</Card>
-						<div className="flex justify-between mt-3">
-							<Button onClick={router.back}>Back</Button>
-							<Button disabled={isPending} type="submit">
+						<div className="flex justify-between mt-4">
+							<Button
+								onClick={router.back}
+								className=" bg-green-800 hover:bg-green-900 text-white py-6 w-48 h-16"
+							>
+								Back
+							</Button>
+							<Button
+								disabled={isPending}
+								type="submit"
+								className=" bg-green-800 hover:bg-green-900 text-white py-6 w-48 h-16"
+							>
 								{isPending ? "Submitting..." : "Next"}
 							</Button>
 						</div>
