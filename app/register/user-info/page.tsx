@@ -19,6 +19,7 @@ import { formatError } from "@/lib/utils";
 import { signUpUserSchema } from "@/lib/validators";
 import { RegisterContextType, SignUpUser } from "@/lib/types";
 import { RegisterContext } from "../registerContext";
+import { toast } from "sonner";
 
 const validateUserInformation = (formData: SignUpUser) => {
 	try {
@@ -76,6 +77,11 @@ function RegistrationStepOne() {
 			return;
 		}
 		setValidationErrors({});
+
+		if (!termsAccepted || !privacyPolicyAccepted || !privTermsChecked) {
+			toast.error("Please accept the terms and conditions and privacy policy.");
+			return;
+		}
 		router.push("/register/otp-selection");
 	};
 
