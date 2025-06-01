@@ -57,20 +57,19 @@ export const generateVerificationTicket = ({
 	contact,
 	otpSessionId,
 }: {
-	contact: string;
+	contact: "email" | "phone";
 	otpSessionId: string;
-}) => {
+}): string => {
 	const verificationTicket = jwt.sign(
 		{
-			sub: contact, // email or phone
+			sub: contact,
 			type: "verification",
-			sessionId: otpSessionId, // the UUID from your OTPStore row
+			sessionId: otpSessionId,
 		},
-		process.env.VERIFY_TOKEN_SECRET!, // a short-lived HMAC secret
+		process.env.VERIFY_TOKEN_SECRET!,
 		{ expiresIn: "5m" }
 	);
 
 	console.log("Generated verification ticket:", verificationTicket);
-
 	return verificationTicket;
 };
