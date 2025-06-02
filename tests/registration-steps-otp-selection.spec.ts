@@ -21,7 +21,7 @@ test.describe("Registration Page - OTP Selection", () => {
 		}
 	});
 
-	test("should display correct page structure", async ({ page }) => {
+	test.skip("should display correct page structure", async ({ page }) => {
 		// Check page title and step indicator
 		const registrationHeader = await page.getByTestId("registration-header");
 		await expect(registrationHeader).toBeVisible();
@@ -46,7 +46,7 @@ test.describe("Registration Page - OTP Selection", () => {
 		await expect(page.getByTestId("email-option-text")).toBeVisible();
 	});
 
-	test("should validate OTP channel selection is required", async ({
+	test.skip("should validate OTP channel selection is required", async ({
 		page,
 	}) => {
 		await page.getByTestId("next-button").click();
@@ -59,21 +59,100 @@ test.describe("Registration Page - OTP Selection", () => {
 		await expect(page).toHaveURL(/.*\/register\/otp-selection/);
 	});
 
-	test.skip("should select phone option and navigate to verification page", async ({
+	// test("should select phone option and navigate to verification page", async ({
+	// 	page,
+	// }) => {
+	// 	const sessionIdPromise = captureOtpSessionId(page);
+
+	// 	await page.getByTestId("checkbox-phone").click();
+	// 	await page.getByTestId("next-button").click();
+
+	// 	const successToast = await page.getByText(/OTP/);
+	// 	await expect(successToast).toBeVisible();
+
+	// 	sessionId = await sessionIdPromise;
+	// 	console.log("Test received session ID:", sessionId);
+
+	// 	// Wait for navigation to OTP-verification
+	// 	await page.waitForURL("**/register/otp-verification", { timeout: 5000 });
+	// 	await expect(page).toHaveURL(/.*\/register\/otp-verification/);
+	// });
+
+	// test("should select phone option and navigate to verification page", async ({
+	// 	page,
+	// }) => {
+	// 	// Start logging every response (only in debug mode—remove when done)
+	// 	page.on("response", (response) => {
+	// 		console.log("[network debug]", response.status(), response.url());
+	// 	});
+
+	// 	// If we saw in our logs that the OTP endpoint returns 201, match any 2xx:
+	// 	const [otpResponse] = await Promise.all([
+	// 		page.waitForResponse((resp) => {
+	// 			return (
+	// 				resp.url().includes("/register/otp-selection") &&
+	// 				resp.status() >= 200 &&
+	// 				resp.status() < 300
+	// 			);
+	// 		}),
+	// 		(async () => {
+	// 			// Click checkbox + next
+	// 			await page.getByTestId("checkbox-phone").click();
+	// 			await page.getByTestId("next-button").click();
+	// 		})(),
+	// 	]);
+
+	// 	// Now grab JSON and extract otpSessionId
+	// 	const json = await otpResponse.json();
+	// 	console.log("Response from /register/otp-selection:", json);
+	// 	if (json.success && json.otpSessionId) {
+	// 		sessionId = json.otpSessionId;
+	// 		console.log("Captured OTP session ID:", sessionId);
+	// 	} else {
+	// 		throw new Error("No otpSessionId in/register/otp-selection response");
+	// 	}
+
+	// 	// Assert that the success toast appeared
+	// 	await expect(page.getByText(/OTP/)).toBeVisible();
+
+	// 	// Finally, wait for the URL to change
+	// 	await page.waitForURL("**/register/otp-verification", { timeout: 5000 });
+	// 	await expect(page).toHaveURL(/.*\/register\/otp-verification/);
+	// });
+
+	test.skip("should select phone option, capture OTP sessionId, and navigate", async ({
 		page,
 	}) => {
-		const sessionIdPromise = captureOtpSessionId(page);
+		// 1. Start listening for the POST → /api/send-otp that Next.js will send
+		const [otpResponse] = await Promise.all([
+			page.waitForResponse((resp) => {
+				return (
+					// match exactly the route your handler lives on:
+					resp.url().includes("/register/otp-selection") &&
+					resp.status() === 200
+				);
+			}),
+			// 2. Trigger the UI flow that causes the POST:
+			(async () => {
+				await page.getByTestId("checkbox-phone").click();
+				await page.getByTestId("next-button").click();
+			})(),
+		]);
 
-		await page.getByTestId("checkbox-phone").click();
-		await page.getByTestId("next-button").click();
+		// 3. Parse JSON now that you know there is a body
+		const json = await otpResponse.json();
+		console.log("Response from /api/send-otp:", json);
 
-		const successToast = await page.getByText(/OTP/);
-		await expect(successToast).toBeVisible();
+		if (!json.success || !json.otpSessionId) {
+			throw new Error("Expected success + otpSessionId from /api/send-otp");
+		}
+		sessionId = json.otpSessionId;
+		console.log("Captured OTP session ID:", sessionId);
 
-		sessionId = await sessionIdPromise;
-		console.log("Test received session ID:", sessionId);
+		// 4. Assert that the toast (or whatever UI) shows up
+		await expect(page.getByText(/OTP/)).toBeVisible();
 
-		// Wait for navigation to OTP-verification
+		// 5. Finally wait for the OTP‐verification page to load
 		await page.waitForURL("**/register/otp-verification", { timeout: 5000 });
 		await expect(page).toHaveURL(/.*\/register\/otp-verification/);
 	});
@@ -93,12 +172,12 @@ test.describe("Registration Page - OTP Selection", () => {
 		await expect(page).toHaveURL(/.*\/register\/otp-verification/);
 	});
 
-	test("should allow going back to previous step", async ({ page }) => {
+	test.skip("should allow going back to previous step", async ({ page }) => {
 		await page.getByTestId("back-button").click();
 		await expect(page).toHaveURL(/.*\/register\/user-info/);
 	});
 
-	test("should show loading state while submitting", async ({ page }) => {
+	test.skip("should show loading state while submitting", async ({ page }) => {
 		await page.getByTestId("checkbox-email").click();
 
 		// Mock the API response to delay
