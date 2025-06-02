@@ -54,7 +54,7 @@ export const verifyOtpRequest = async ({
 	return data;
 };
 
-export const POST_OTP_REQUEST_SERVICE = async ({
+const POST_OTP_REQUEST_SERVICE = async ({
 	body,
 	endpoint,
 }: {
