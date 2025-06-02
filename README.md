@@ -23,6 +23,12 @@ Create a `.env` file in the root directory and add the following variables:
 ```env
 VERIFY_TOKEN_SECRET=
 DATABASE_URL=
+```
 
+### Add Vercel repository secrets
 
+```env
+VERCEL_TOKEN=
+VERCEL_ORG_ID=
+VERCEL_PROJECT_ID=
 ```
