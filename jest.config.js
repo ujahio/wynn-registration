@@ -14,5 +14,4 @@ module.exports = {
 	moduleNameMapper: {
 		"^@/(.*)$": "<rootDir>/$1",
 	},
-	testMatch: ["**/lib/**/*.test.ts"],
 };
