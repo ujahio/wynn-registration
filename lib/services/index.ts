@@ -12,10 +12,19 @@ export const sendOtpRequest = async ({
 		throw new Error("Error sending OTP");
 	}
 
-	return POST_OTP_REQUEST_SERVICE({
+	const response = await POST_OTP_REQUEST_SERVICE({
 		body: { otpChannel, otpContact },
 		endpoint: "send-otp",
 	});
+
+	const data = await response.json();
+
+	if (!data.success) {
+		console.error("Error:", data.message);
+		throw new Error("Failed to send OTP");
+	}
+
+	return data;
 };
 
 export const verifyOtpRequest = async ({
@@ -30,10 +39,19 @@ export const verifyOtpRequest = async ({
 		throw new Error("Error verifying  OTP");
 	}
 
-	return POST_OTP_REQUEST_SERVICE({
+	const response = await POST_OTP_REQUEST_SERVICE({
 		body: { otpSessionId, otp },
 		endpoint: "verify-otp",
 	});
+
+	const data = await response.json();
+
+	if (!data.success) {
+		console.error("Error:", data.message);
+		throw new Error("Failed to verify OTP");
+	}
+
+	return data;
 };
 
 export const POST_OTP_REQUEST_SERVICE = async ({
@@ -45,21 +63,14 @@ export const POST_OTP_REQUEST_SERVICE = async ({
 }) => {
 	const headersList = await headers();
 	const host = headersList.get("host") || "localhost:3000";
-	const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+	const protocol = host.includes("localhost") ? "http" : "https";
+	const url = `${protocol}://${host}/api/${endpoint}`;
 
-	const response = await fetch(`${protocol}://${host}/api/${endpoint}`, {
+	return await fetch(url, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify(body),
 	});
-
-	const data = await response.json();
-	if (!data.success) {
-		console.error("Error:", data.message);
-		throw new Error("Failed to verify OTP");
-	}
-
-	return data;
 };
