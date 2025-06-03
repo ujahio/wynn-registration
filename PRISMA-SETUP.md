@@ -57,9 +57,3 @@ Replace `<migration_name>` with a descriptive name for your migration. This will
 ```bash
 bun prisma studio
 ```
-
-9. Seed the database with initial data (optional):
-
-```bash
-bun run seed:db
-```

@@ -4,6 +4,8 @@
 
 https://wynn-registration.vercel.app/register/user-info
 
+** Special Notice: DB connection is not working in the deployed site due to connectivity issues. Please run the project locally to test the functionality. **
+
 ### Set up Vercel and Neon
 
 This project uses Vercel and Neon for hosting and database management. Follow these steps to set up your environment:
